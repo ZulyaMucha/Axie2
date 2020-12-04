@@ -1,0 +1,18 @@
+type LovelyAxie @entity {
+  id: ID!
+  name: BigInt!
+  genes: BigInt!
+  creator: Bytes!
+  birthTime: BigInt!
+  axieURI: String!
+}
+
+type TransferEntity @entity {
+  id: ID!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  AxieNumber: BigInt!
+  addressFrom:Bytes!
+  addressTo: Bytes!
+}
+
