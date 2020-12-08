@@ -1,10 +1,14 @@
-type LovelyAxie @entity {
+type Axie @entity {
   id: ID!
   name: BigInt!
+  "current set of genes "
   genes: BigInt!
-  creator: Bytes!
+  "user who mated 2 Axies to create a new one"
+  creator: User!
+  "timestamp when Axie was created"
   birthTime: BigInt!
-  axieURI: String!
+  "timestamp when Axie was evolved if it was evolved already - might be null"
+  evolvingTime: BigInt
 }
 
 type TransferEntity @entity {
@@ -12,7 +16,16 @@ type TransferEntity @entity {
   blockNumber: BigInt!
   timestamp: BigInt!
   AxieNumber: BigInt!
-  addressFrom:Bytes!
-  addressTo: Bytes!
+  src: Bytes!
+  dst: Bytes!
+}
+
+type User @entity {
+  id: ID!
+  address: Bytes!
+  "how many Axies does this user own right now"
+  quantityAxies: BigInt!
+  "which Axies this user created by breading 2 other Axies"
+  CreatorOfAxies: [Axie!]! @derivedFrom(field: "creator")
 }
 

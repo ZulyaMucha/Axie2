@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class LovelyAxie extends Entity {
+export class Axie extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class LovelyAxie extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save LovelyAxie entity without an ID");
+    assert(id !== null, "Cannot save Axie entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save LovelyAxie entity with non-string ID. " +
+      "Cannot save Axie entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("LovelyAxie", id.toString(), this);
+    store.set("Axie", id.toString(), this);
   }
 
-  static load(id: string): LovelyAxie | null {
-    return store.get("LovelyAxie", id) as LovelyAxie | null;
+  static load(id: string): Axie | null {
+    return store.get("Axie", id) as Axie | null;
   }
 
   get id(): string {
@@ -60,13 +60,13 @@ export class LovelyAxie extends Entity {
     this.set("genes", Value.fromBigInt(value));
   }
 
-  get creator(): Bytes {
+  get creator(): string {
     let value = this.get("creator");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set creator(value: Bytes) {
-    this.set("creator", Value.fromBytes(value));
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
   }
 
   get birthTime(): BigInt {
@@ -78,13 +78,21 @@ export class LovelyAxie extends Entity {
     this.set("birthTime", Value.fromBigInt(value));
   }
 
-  get axieURI(): string {
-    let value = this.get("axieURI");
-    return value.toString();
+  get evolvingTime(): BigInt | null {
+    let value = this.get("evolvingTime");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set axieURI(value: string) {
-    this.set("axieURI", Value.fromString(value));
+  set evolvingTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("evolvingTime");
+    } else {
+      this.set("evolvingTime", Value.fromBigInt(value as BigInt));
+    }
   }
 }
 
@@ -145,21 +153,79 @@ export class TransferEntity extends Entity {
     this.set("AxieNumber", Value.fromBigInt(value));
   }
 
-  get addressFrom(): Bytes {
-    let value = this.get("addressFrom");
+  get src(): Bytes {
+    let value = this.get("src");
     return value.toBytes();
   }
 
-  set addressFrom(value: Bytes) {
-    this.set("addressFrom", Value.fromBytes(value));
+  set src(value: Bytes) {
+    this.set("src", Value.fromBytes(value));
   }
 
-  get addressTo(): Bytes {
-    let value = this.get("addressTo");
+  get dst(): Bytes {
+    let value = this.get("dst");
     return value.toBytes();
   }
 
-  set addressTo(value: Bytes) {
-    this.set("addressTo", Value.fromBytes(value));
+  set dst(value: Bytes) {
+    this.set("dst", Value.fromBytes(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save User entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save User entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("User", id.toString(), this);
+  }
+
+  static load(id: string): User | null {
+    return store.get("User", id) as User | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get quantityAxies(): BigInt {
+    let value = this.get("quantityAxies");
+    return value.toBigInt();
+  }
+
+  set quantityAxies(value: BigInt) {
+    this.set("quantityAxies", Value.fromBigInt(value));
+  }
+
+  get CreatorOfAxies(): Array<string> {
+    let value = this.get("CreatorOfAxies");
+    return value.toStringArray();
+  }
+
+  set CreatorOfAxies(value: Array<string>) {
+    this.set("CreatorOfAxies", Value.fromStringArray(value));
   }
 }
