@@ -3,28 +3,23 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Axie
+    name: Main
     network: mainnet
     source:
       address: "0xF5b0A3eFB8e8E4c201e2A935F110eAaF3FFEcb8d"
-      abi: Axie
+      abi: Main
       startBlock: 5251724
-   
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - AxieSpawned
-        - AxieRebirthed
-        - AxieRetired
         - AxieEvolved
         - Transfer
-        - Approval
-        - ApprovalForAll
       abis:
-        - name: Axie
-          file: ./abis/Axie.json
+        - name: Main
+          file: ./abis/Main.json
       eventHandlers:
         - event: AxieSpawned(indexed uint256,indexed address,uint256)
           handler: handleAxieSpawned
@@ -32,4 +27,4 @@ dataSources:
           handler: handleAxieEvolved
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mapping.ts
+      file: ./src/mappingMain.ts
