@@ -15,6 +15,7 @@ type TransferEntity @entity {
   id: ID!
   blockNumber: BigInt!
   timestamp: BigInt!
+  transactionHash: Bytes!
   AxieNumber: BigInt!
   src: Bytes!
   dst: Bytes!

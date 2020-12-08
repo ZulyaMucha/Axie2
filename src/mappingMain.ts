@@ -44,6 +44,7 @@ export function handleTransfer(event: Transfer): void {
   let transer = new TransferEntity (event.transaction.hash.toHex())
   transer.blockNumber = event.block.number
   transer.timestamp = event.block.timestamp
+  transer.transactionHash =event.transaction.hash
   transer.AxieNumber = event.params._tokenId
   transer.src = event.params._from
   transer.dst = event.params._to
